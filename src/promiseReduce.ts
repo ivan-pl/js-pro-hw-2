@@ -10,5 +10,5 @@ export default async function promiseReduce<T>(
     memoValue = reduce(memoValue, await func());
   }
 
-  return Promise.resolve(memoValue);
+  return memoValue;
 }
