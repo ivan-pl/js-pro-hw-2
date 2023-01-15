@@ -1,7 +1,14 @@
-export default function promiseReduce<T>(
-  asyncFunctions: (() => Promise<T>)[],
+type AsyncFunc<T> = () => Promise<T>;
+
+export default async function promiseReduce<T>(
+  asyncFunctions: [AsyncFunc<T>, ...AsyncFunc<T>[]],
   reduce: (memo: T, value: T) => T,
   initialValue: T
 ): Promise<T> {
-  return Promise.resolve(1 as T);
+  let memoValue = initialValue;
+  for (const func of asyncFunctions) {
+    memoValue = reduce(memoValue, await func());
+  }
+
+  return Promise.resolve(memoValue);
 }

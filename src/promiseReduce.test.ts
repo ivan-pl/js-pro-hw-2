@@ -25,10 +25,10 @@ describe("promiseReduce()", () => {
     );
 
     expect(result).toBe(2);
-    expect(checkStack).toEqual(["fn1", "fn2", "reduce"]);
+    expect(checkStack).toEqual(["fn1", "reduce", "fn2", "reduce"]);
   });
 
-  it("returns 6", async () => {
+  it("returns 8", async () => {
     const checkStack: string[] = []; // checks the order in which functions are run
 
     const fn1 = () => {
@@ -53,10 +53,17 @@ describe("promiseReduce()", () => {
         checkStack.push("reduce");
         return memo + value;
       },
-      1
+      2
     );
 
-    expect(result).toBe(6);
-    expect(checkStack).toEqual(["fn1", "fn2", "fn3", "reduce"]);
+    expect(result).toBe(8);
+    expect(checkStack).toEqual([
+      "fn1",
+      "reduce",
+      "fn2",
+      "reduce",
+      "fn3",
+      "reduce",
+    ]);
   });
 });
